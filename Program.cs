@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace manipulandovetor
 {
@@ -6,77 +7,103 @@ namespace manipulandovetor
     {
         static void Main(string[] args)
         {
-            string[] nomes = new string[11];
+            string separador = new string('-', 45);
+            string[] nomes = new string[10];
             int indice = 0;
+            Console.WriteLine(separador);
+            Console.WriteLine("Adicionando nome na lista");
+            Console.WriteLine(separador);
+            AddNome(nomes, "Charleu");
+            AddNome(nomes, "Charles");
+            AddNome(nomes, "Shyrley");
+            indice++;
 
-            // Adicionando alguns nomes em índices específicos
-            AdicionarNome(nomes, 0, "Maria");
-            AdicionarNome(nomes, 1, "João");
-            AdicionarNome(nomes, 2, "Ana");
-            AdicionarNome(nomes, 3, "Pedro");
-            AdicionarNome(nomes, 4, "Lucas");
-            AdicionarNome(nomes, 5, "Luiza");
-            AdicionarNome(nomes, 6, "Paula");
-            AdicionarNome(nomes, 7, "Carlos");
-            AdicionarNome(nomes, 8, "Roberta");
-            AdicionarNome(nomes, 9, "Fernanda");
-            AdicionarNome(nomes, 10, "Ricardo");
-            indice = 11;
-
-            // Verificando se o vetor está cheio
-            if (indice >= nomes.Length)
+            if (indice > nomes.Length)
             {
                 Console.WriteLine("Vetor cheio");
             }
 
-            // Ordenando e imprimindo todos os nomes
-            OrdenarNomes(nomes);
-            ImprimirNomes(nomes);
+            ImprimeNomes(nomes);
+            Console.WriteLine(separador);
+            Console.WriteLine("Adicionando nome em índice específico...");
+            Console.WriteLine(separador);
+            AddNomeEmIndice(nomes, 3, "Maria");
+            AddNomeEmIndice(nomes, 7, "José");
+            AddNomeEmIndice(nomes, 9, "Sheylla");
 
-            // Removendo um registro
-            RemoverNome(nomes, "Ana");
-            ImprimirNomes(nomes);
+            ImprimeNomes(nomes);
+            Console.WriteLine(separador);
+            Console.WriteLine("Ordenando nomes em ordem alfabética...");
+            Console.WriteLine(separador);
+
+            OrdenarNomes(nomes);
+
+            ImprimeNomes(nomes);
+            Console.WriteLine(separador);
+            Console.WriteLine("Removendo nome da lista...");
+            Console.WriteLine(separador);
+            RemoverNome(nomes, "Shyrlley");
+            ImprimeNomes(nomes);
         }
 
-        public static void AdicionarNome(string[] lista, int indice, string nome)
+        public static void AddNome(string[] lista, string nome)
         {
-            if (indice >= 0 && indice < lista.Length)
+            for (int i = 0; i < lista.Length; i++)
             {
-                lista[indice] = nome;
-                Console.WriteLine($"Nome '{nome}' adicionado com sucesso!");
+                if (string.IsNullOrEmpty(lista[i]))
+                {
+                    lista[i] = nome;
+                    Console.WriteLine($"Nome '{nome}' adicionado com sucesso!");
+                    return;
+                }
             }
-            else
+            Console.WriteLine("Lista cheia. Não é possível adicionar mais nomes.");
+        }
+
+        public static void AddNomeEmIndice(string[] lista, int indice, string nome)
+        {
+            if (indice < 0 || indice >= lista.Length)
             {
-                Console.WriteLine("Índice inválido!");
+                Console.WriteLine($"Índice inválido. Escolha um índice entre 0 e {lista.Length - 1}");
+                return;
             }
+
+            if (!string.IsNullOrEmpty(lista[indice]))
+            {
+                Console.WriteLine("Índice já ocupado.");
+                return;
+            }
+
+            lista[indice] = nome;
+            Console.WriteLine($"Nome '{nome}' adicionado com sucesso no índice {indice}!");
         }
 
         public static void OrdenarNomes(string[] nomes)
         {
-            Array.Sort(nomes);
+            Array.Sort(nomes, (a, b) => string.Compare(a, b, StringComparison.Ordinal));
+            Console.WriteLine("Nomes ordenados com sucesso!");
         }
 
-        public static void ImprimirNomes(string[] nomes)
+        public static void ImprimeNomes(string[] nomes)
         {
-            bool estaVazio = true;
+            bool estaVazia = true;
 
             for (int i = 0; i < nomes.Length; i++)
             {
                 if (!string.IsNullOrWhiteSpace(nomes[i]))
                 {
-                    estaVazio = false;
+                    estaVazia = false;
                     break;
                 }
             }
 
-            if (estaVazio)
+            if (estaVazia)
             {
-                Console.WriteLine("Lista vazia");
+                Console.WriteLine("Lista vazia.");
             }
             else
             {
-                Console.WriteLine("Lista de nomes:");
-
+                Console.WriteLine("\nNomes na lista:");
                 for (int i = 0; i < nomes.Length; i++)
                 {
                     if (!string.IsNullOrWhiteSpace(nomes[i]))
@@ -87,25 +114,18 @@ namespace manipulandovetor
             }
         }
 
-        public static void RemoverNome(string[] nomes, string nome)
+        public static void RemoverNome(string[] lista, string nome)
         {
-            bool encontrado = false;
-
-            for (int i = 0; i < nomes.Length; i++)
+            for (int i = 0; i < lista.Length; i++)
             {
-                if (nomes[i] == nome)
+                if (lista[i] == nome)
                 {
-                    nomes[i] = string.Empty;
-                    encontrado = true;
+                    lista[i] = null;
                     Console.WriteLine($"Nome '{nome}' removido com sucesso!");
-                    break;
+                    return;
                 }
             }
-
-            if (!encontrado)
-            {
-                Console.WriteLine($"Nome '{nome}' não encontrado na lista!");
-            }
+            Console.WriteLine($"Nome '{nome}' não encontrado na lista.");
         }
     }
 }
