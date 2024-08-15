@@ -35,9 +35,9 @@ namespace manipulandovetor
             Console.WriteLine("Adicionando nome em índice específico...");
             Console.WriteLine(separador);
 
-            AddNomeEmIndice(nomes, 3, "MariaNova");
-            AddNomeEmIndice(nomes, 7, "JoséNovo");
-            AddNomeEmIndice(nomes, 9, "SheyllaNova");
+            AddNomeEmIndice(nomes, 3, "Jessika");
+            AddNomeEmIndice(nomes, 7, "Jesse");
+            AddNomeEmIndice(nomes, 9, "Everton");
 
             ImprimeNomes(nomes);
             Console.WriteLine(separador);
