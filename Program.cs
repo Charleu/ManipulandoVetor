@@ -13,12 +13,19 @@ namespace manipulandovetor
             Console.WriteLine(separador);
             Console.WriteLine("Adicionando nome na lista");
             Console.WriteLine(separador);
+
             AddNome(nomes, "Charleu");
             AddNome(nomes, "Charles");
             AddNome(nomes, "Shyrley");
-            indice++;
+            AddNome(nomes, "Maria");
+            AddNome(nomes, "José");
+            AddNome(nomes, "Sheylla");
+            AddNome(nomes, "Ana");
+            AddNome(nomes, "João");
+            AddNome(nomes, "Lucas");
+            indice = 9;
 
-            if (indice > nomes.Length)
+            if (indice >= nomes.Length)
             {
                 Console.WriteLine("Vetor cheio");
             }
@@ -27,9 +34,10 @@ namespace manipulandovetor
             Console.WriteLine(separador);
             Console.WriteLine("Adicionando nome em índice específico...");
             Console.WriteLine(separador);
-            AddNomeEmIndice(nomes, 3, "Maria");
-            AddNomeEmIndice(nomes, 7, "José");
-            AddNomeEmIndice(nomes, 9, "Sheylla");
+
+            AddNomeEmIndice(nomes, 3, "MariaNova");
+            AddNomeEmIndice(nomes, 7, "JoséNovo");
+            AddNomeEmIndice(nomes, 9, "SheyllaNova");
 
             ImprimeNomes(nomes);
             Console.WriteLine(separador);
@@ -68,10 +76,25 @@ namespace manipulandovetor
                 return;
             }
 
-            if (!string.IsNullOrEmpty(lista[indice]))
+            bool vetorCheio = true;
+            for (int i = 0; i < lista.Length; i++)
             {
-                Console.WriteLine("Índice já ocupado.");
+                if (string.IsNullOrEmpty(lista[i]))
+                {
+                    vetorCheio = false;
+                    break;
+                }
+            }
+
+            if (vetorCheio)
+            {
+                Console.WriteLine("Lista cheia.");
                 return;
+            }
+
+            for (int i = lista.Length - 1; i > indice; i--)
+            {
+                lista[i] = lista[i - 1];
             }
 
             lista[indice] = nome;
@@ -80,36 +103,43 @@ namespace manipulandovetor
 
         public static void OrdenarNomes(string[] nomes)
         {
-            Array.Sort(nomes, (a, b) => string.Compare(a, b, StringComparison.Ordinal));
-            Console.WriteLine("Nomes ordenados com sucesso!");
+            int tamanho = nomes.Length;
+            for (int i = tamanho - 1; i >= 1; i--)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (string.Compare(nomes[j], nomes[j + 1], StringComparison.Ordinal) > 0)
+                    {
+                        string aux = nomes[j];
+                        nomes[j] = nomes[j + 1];
+                        nomes[j + 1] = aux;
+                    }
+                }
+            }
+            Console.WriteLine("Ordenação concluída!");
         }
 
         public static void ImprimeNomes(string[] nomes)
         {
-            bool estaVazia = true;
-
+            bool vetorNull = false;
             for (int i = 0; i < nomes.Length; i++)
             {
-                if (!string.IsNullOrWhiteSpace(nomes[i]))
+                if (string.IsNullOrEmpty(nomes[i]))
                 {
-                    estaVazia = false;
+                    vetorNull = true;
                     break;
                 }
             }
 
-            if (estaVazia)
+            if (nomes.All(n => string.IsNullOrWhiteSpace(n)))
             {
-                Console.WriteLine("Lista vazia.");
+                Console.WriteLine("Lista vazia");
             }
             else
             {
-                Console.WriteLine("\nNomes na lista:");
                 for (int i = 0; i < nomes.Length; i++)
                 {
-                    if (!string.IsNullOrWhiteSpace(nomes[i]))
-                    {
-                        Console.WriteLine(nomes[i]);
-                    }
+                    Console.WriteLine(nomes[i]);
                 }
             }
         }
@@ -125,7 +155,8 @@ namespace manipulandovetor
                     return;
                 }
             }
-            Console.WriteLine($"Nome '{nome}' não encontrado na lista.");
+            Console.WriteLine($"Nome '{nome}' não encontrado.");
         }
     }
 }
+
